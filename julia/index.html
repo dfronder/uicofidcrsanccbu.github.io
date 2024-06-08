@@ -1,0 +1,36 @@
+<!--
+   FILE NAME   : index.html
+   PROGRAMMER  : DC6
+   LAST UPDATE : 06.06.2024
+   PURPOSE     : Julia Fractal html file.
+-->
+
+<!DOCTYPE html>
+<html lang="ru" class="notranslate" translate="no">
+  <head>
+    <meta name="google" content="notranslate">    
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="m.png" type="image/png" />
+    <title>Julia Fractal</title>
+  </head>
+  <body>
+    <canvas id="myCan" width="900px" height="900px" style="border: 2px solid red"></canvas>
+    <script type="module">
+      import * as vigl from "./mylib.js";
+ 
+      window.addEventListener("load", () => {
+        vigl.initGL();
+        const draw = () => {
+          // drawing
+          vigl.render();
+ 
+          // animation register
+          window.requestAnimationFrame(draw);
+        };
+        draw();
+      });
+    </script>
+  </body>
+</html>
+
+<!-- END OF 'index.html' FILE -->

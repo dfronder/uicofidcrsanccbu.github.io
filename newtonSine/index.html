@@ -1,0 +1,37 @@
+<!--
+   FILE NAME   : index.html
+   PROGRAMMER  : DC6
+   LAST UPDATE : 06.06.2024
+   PURPOSE     : Newton fractal with sine html file.
+-->
+
+<!DOCTYPE html>
+<html lang="ru" class="notranslate" translate="no">
+  <head>
+    <meta name="google" content="notranslate">    
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="m.png" type="image/png" />
+    <title>Newton Sine Fractal</title>
+    <h1><b>Newton Sine Fractal (z = z - sin(z)/cos(z))</b></h1>
+  </head>
+  <body>
+    <canvas id="myCan" width="900px" height="900px" style="border: 2px solid red"></canvas>
+    <script type="module">
+      import * as ntsn from "./newtonSine.js";
+ 
+      window.addEventListener("load", () => {
+        ntsn.initGL();
+        const draw = () => {
+          // drawing
+          ntsn.render();
+ 
+          // animation register
+          window.requestAnimationFrame(draw);
+        };
+        draw();
+      });
+    </script>
+  </body>
+</html>
+
+<!-- END OF 'index.html' FILE -->

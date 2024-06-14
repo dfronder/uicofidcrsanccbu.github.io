@@ -1,19 +1,19 @@
 #version 300 es
 precision highp float;
 
-in vec3 DrawNormal;
+out vec4 OutColor;
+
 in vec3 DrawPos;
+in vec3 DrawNormal;
 
 uniform float Time;
 
-out vec4 OutColor;
-    
 void main( void )
 {
-  vec3 L = normalize(vec3(0.8, 0.47, 1.0));
+  vec3 L = normalize(vec3(0.5, 0.5, 0.5));
   vec3 N = normalize(DrawNormal);
   N = faceforward(N, normalize(DrawPos), N);
   N = vec3(N.x, -N.y, N.z);
-  float k = dot(L, normalize(N));
-  OutColor = vec4(k * vec3(0.5, 0.5, 0.5), 1.0);
+  vec3 col = dot(L, normalize(N)) * vec3(0.5, 0.5, 0.5);
+  OutColor = vec4(col, 1.0);
 }

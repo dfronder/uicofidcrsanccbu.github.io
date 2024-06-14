@@ -4,16 +4,17 @@ precision highp float;
 in vec3 InPosition;
 in vec3 InNormal;
 
-uniform float Time;
-uniform mat4 MatrProj;
-uniform mat4 MatrW;
-
-out vec3 DrawNormal;
 out vec3 DrawPos;
-    
+out vec3 DrawNormal;
+
+uniform float Time;
+uniform mat4 MatrWVP;
+uniform mat4 MatrW;
+uniform mat4 MatrWInv;
+
 void main( void )
 {
-  gl_Position = MatrProj * vec4(InPosition, 1.0);
-  DrawPos = vec3(MatrW * vec4(InPosition.xyz, 1.0));
-  DrawNormal = mat3(transpose(inverse(MatrW))) * InNormal;
+  gl_Position = MatrWVP * vec4(InPosition, 1.0);
+  DrawPos = vec3(MatrW * vec4(InPosition, 1.0));
+  DrawNormal = mat3(MatrWInv) * InNormal;
 }

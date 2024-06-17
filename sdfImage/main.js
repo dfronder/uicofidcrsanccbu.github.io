@@ -88,11 +88,11 @@ export function main() {
         white_count++;
       }
     }
-  }, 70)
+  }, 200)
   setTimeout(() => {
     buildSDF();
     drawSDF();
-  }, 100);
+  }, 250);
 } // End of 'main' function
 
 document.getElementById("gen").onclick = function() {main()};

@@ -1,7 +1,7 @@
 <!--
    FILE NAME   : index.html
    PROGRAMMER  : DC6
-   LAST UPDATE : 06.06.2024
+   LAST UPDATE : 26.06.2024
    PURPOSE     : Julia Fractal html file.
 -->
 
@@ -12,24 +12,75 @@
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="m.png" type="image/png" />
     <title>Julia Fractal</title>
-    <h1><a href="/">Site root</a><br /></h1>
+    <h1>Julia Fractal (Press P to pause)</h1>
+    <h3><a href="/">Site root</a><br /></h3>
   </head>
   <body>
-    <canvas id="myCan" width="900px" height="900px" style="border: 2px solid red"></canvas>
+    <canvas id="myCan" width="800px" height="800px" style="border: 2px solid red"></canvas>
     <script type="module">
-      import * as vigl from "./mylib.js";
- 
+      import { anim } from "./mylib.js";
+
+      const canvas = document.getElementById("myCan");
+      window.anim = anim(canvas);
+
       window.addEventListener("load", () => {
-        vigl.initGL();
+        window.anim.initGL();
+
         const draw = () => {
-          // drawing
-          vigl.render();
- 
-          // animation register
+          window.anim.timer.response();
+          window.anim.render();
           window.requestAnimationFrame(draw);
         };
         draw();
       });
+
+      const handleZoom = (event) => {
+        event.preventDefault();
+
+        const scaleFactor = 1.15;
+        const zoomIn = -event.deltaY < 0;
+
+        const zoom = zoomIn ? scaleFactor : 1 / scaleFactor;
+
+        const mouseX = event.clientX / window.anim.canvas.width;
+        const mouseY = -event.clientY / window.anim.canvas.height + 1;
+
+        const worldX = window.anim.start.x + mouseX * (window.anim.end.x - window.anim.start.x);
+        const worldY = window.anim.start.y + mouseY * (window.anim.end.y - window.anim.start.y);
+
+        window.anim.start.x = worldX + (window.anim.start.x - worldX) * zoom;
+        window.anim.start.y = worldY + (window.anim.start.y - worldY) * zoom;
+        window.anim.end.x = worldX + (window.anim.end.x - worldX) * zoom;
+        window.anim.end.y = worldY + (window.anim.end.y - worldY) * zoom;
+      };
+
+      const handleMouseMove = (event) => {
+        event.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+
+        window.anim.oldMousePos = {...window.anim.mousePos};
+
+        window.anim.mousePos.x = event.clientX / window.anim.canvas.width;
+        window.anim.mousePos.y = -event.clientY / window.anim.canvas.height + 1;
+
+        if (event.buttons === 1) {
+          const size = {
+            x: window.anim.end.x - window.anim.start.x,
+            y: window.anim.end.y - window.anim.start.y
+          };
+
+         const dx = window.anim.mousePos.x - window.anim.oldMousePos.x;
+         const dy = window.anim.mousePos.y - window.anim.oldMousePos.y;
+
+         window.anim.start.x -= dx * size.x;
+         window.anim.start.y -= dy * size.y;
+         window.anim.end.x -= dx * size.x;
+         window.anim.end.y -= dy * size.y;
+       }
+      };
+
+      canvas.addEventListener("wheel", handleZoom);
+      canvas.addEventListener("mousemove", handleMouseMove);
     </script>
   </body>
 </html>
